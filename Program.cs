@@ -6,12 +6,10 @@ using Windows.Media.Control;
 using Windows.Storage.Streams;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 class Program
 {
-  static async Task Main(string[] args)
+  static void Main(string[] args)
   {
     try
     {
@@ -23,7 +21,8 @@ class Program
 
       var app = builder.Build();
 
-      app.MapGet("/", () => GetMediaPropertiesJson());
+      app.UseStaticFiles();
+      app.MapGet("/data", () => GetMediaPropertiesJson());
       app.Run();
     }
     catch (Exception e)

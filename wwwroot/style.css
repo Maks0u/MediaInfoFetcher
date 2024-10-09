@@ -1,0 +1,50 @@
+body {
+  background-color: hsla(0, 0%, 0%, 0);
+  color: hsl(0, 0%, 100%);
+  font-family: Arial, Helvetica, sans-serif;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
+#wrapper {
+  align-items: center;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  height: 100%;
+}
+
+#thumbnail-wrapper {
+  height: 125px;
+  width: 125px;
+}
+#thumbnail-wrapper.empty {
+  width: 0;
+}
+
+#thumbnail {
+  height: 100%;
+  width: 100%;
+}
+#thumbnail.empty {
+  display: none;
+}
+
+#title-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-self: center;
+}
+
+#title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+#artist {
+  color: hsl(0, 0%, 60%);
+  font-size: 1rem;
+  text-align: center;
+}
