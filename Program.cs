@@ -45,6 +45,13 @@ class Program
       }
 
       await PrintMediaProperties(currentSession);
+
+      currentSession.MediaPropertiesChanged += async (sender, e) =>
+      {
+        await PrintMediaProperties(currentSession);
+      };
+
+      Console.ReadKey();
     }
     catch (Exception e)
     {
