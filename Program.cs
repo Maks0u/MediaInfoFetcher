@@ -21,6 +21,7 @@ class Program
 
       var app = builder.Build();
 
+      app.UseDefaultFiles();
       app.UseStaticFiles();
       app.MapGet("/data", () => GetMediaPropertiesJson());
       app.Run();
