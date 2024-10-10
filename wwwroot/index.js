@@ -1,50 +1,60 @@
-async function fetchMediaProperties() {
-  try {
-    const response = await fetch('/data');
-    if (!response.ok) {
-      return {};
-    }
-    return response.json();
-  } catch (error) {
-    console.error(error);
-    return {};
-  }
-}
-
+const title = document.getElementById('title');
+const artist = document.getElementById('artist');
+const thumbnailWrapper = document.getElementById('thumbnail-wrapper');
+const thumbnail = document.getElementById('thumbnail');
 let noThumbnailCount = 0;
 
-function updateMediaProperties(data) {
+async function main() {
+  updateWidget(await fetchMediaProperties());
+  setInterval(async () => {
+    updateWidget(await fetchMediaProperties());
+  }, 1000);
+}
+
+main();
+
+function updateWidget(data) {
+  if (!data) {
+    clear();
+    return;
+  }
   if (!data.thumbnail && noThumbnailCount < 3) {
     noThumbnailCount++;
     return;
   }
   noThumbnailCount = 0;
 
-  const title = document.getElementById('title');
-  const artist = document.getElementById('artist');
-  const thumbnail = document.getElementById('thumbnail');
-  const thumbnailWrapper = document.getElementById('thumbnail-wrapper');
-
   title.textContent = data.title || '';
   artist.textContent = data.artist || '';
   if (data.thumbnail) {
-    thumbnailWrapper.classList.remove('empty');
-    thumbnail.classList.remove('empty');
-    thumbnail.setAttribute(
-      'src',
-      `data:${data.thumbnail?.mimeType};base64,${data.thumbnail?.base64}`
-    );
+    showThumbnail(data.thumbnail);
   } else {
-    thumbnailWrapper.classList.add('empty');
-    thumbnail.classList.add('empty');
+    hideThumbnail();
   }
 }
 
-async function main() {
-  updateMediaProperties(await fetchMediaProperties());
-  setInterval(async () => {
-    updateMediaProperties(await fetchMediaProperties());
-  }, 1000);
+function clear() {
+  title.textContent = '';
+  artist.textContent = '';
+  hideThumbnail();
 }
 
-main();
+function showThumbnail({ base64, mimeType }) {
+  thumbnailWrapper.classList.remove('empty');
+  thumbnail.setAttribute('src', `data:${mimeType};base64,${base64}`);
+}
+
+function hideThumbnail() {
+  thumbnailWrapper.classList.add('empty');
+  thumbnail.setAttribute('src', '');
+}
+
+async function fetchMediaProperties() {
+  try {
+    const response = await fetch('/data');
+    return response.ok ? response.json() : null;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

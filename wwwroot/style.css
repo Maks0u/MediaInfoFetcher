@@ -21,13 +21,13 @@ body {
 #thumbnail-wrapper.empty {
   width: 0;
 }
+#thumbnail-wrapper.empty > #thumbnail {
+  display: none;
+}
 
 #thumbnail {
   height: 100%;
   width: 100%;
-}
-#thumbnail.empty {
-  display: none;
 }
 
 #title-wrapper {
