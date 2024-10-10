@@ -1,7 +1,8 @@
-const title = document.getElementById('title');
-const artist = document.getElementById('artist');
-const thumbnailWrapper = document.getElementById('thumbnail-wrapper');
-const thumbnail = document.getElementById('thumbnail');
+const TITLE = document.getElementById('title');
+const ARTIST = document.getElementById('artist');
+const THUMBNAIL = document.getElementById('thumbnail');
+const THUMBNAIL_WRAPPER = document.getElementById('thumbnail-wrapper');
+const ERROR = document.getElementById('error');
 let noThumbnailCount = 0;
 
 async function main() {
@@ -24,8 +25,8 @@ function updateWidget(data) {
   }
   noThumbnailCount = 0;
 
-  title.textContent = data.title || '';
-  artist.textContent = data.artist || '';
+  TITLE.textContent = data.title || '';
+  ARTIST.textContent = data.artist || '';
   if (data.thumbnail) {
     showThumbnail(data.thumbnail);
   } else {
@@ -34,27 +35,28 @@ function updateWidget(data) {
 }
 
 function clear() {
-  title.textContent = '';
-  artist.textContent = '';
+  TITLE.textContent = '';
+  ARTIST.textContent = '';
   hideThumbnail();
 }
 
 function showThumbnail({ base64, mimeType }) {
-  thumbnailWrapper.classList.remove('empty');
-  thumbnail.setAttribute('src', `data:${mimeType};base64,${base64}`);
+  THUMBNAIL_WRAPPER.classList.remove('empty');
+  THUMBNAIL.setAttribute('src', `data:${mimeType};base64,${base64}`);
 }
 
 function hideThumbnail() {
-  thumbnailWrapper.classList.add('empty');
-  thumbnail.setAttribute('src', '');
+  THUMBNAIL_WRAPPER.classList.add('empty');
+  THUMBNAIL.setAttribute('src', '');
 }
 
 async function fetchMediaProperties() {
   try {
     const response = await fetch('/data');
+    ERROR.textContent = '';
     return response.ok ? response.json() : null;
   } catch (error) {
-    console.error(error);
+    ERROR.textContent = 'Server is down';
     return null;
   }
 }

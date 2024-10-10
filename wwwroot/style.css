@@ -48,3 +48,15 @@ body {
   font-size: 1rem;
   text-align: center;
 }
+
+#error {
+  align-items: center;
+  color: hsl(0, 80%, 50%);
+  display: flex;
+  font-size: 2rem;
+  height: 100vh;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+}
