@@ -2,7 +2,11 @@ name: .NET Publish
 
 on:
   push:
-    branches: ['main']
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   publish:
@@ -17,7 +21,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4.4.3
         with:
-          name: MediaInfoFetcher
+          name: MediaWidget
           path: bin\Release\net8.0-windows10.0.22000.0\win-x64\publish
           retention-days: 1 day
           overwrite: true

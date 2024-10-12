@@ -21,13 +21,13 @@ body {
 #thumbnail-wrapper.empty {
   width: 0;
 }
+#thumbnail-wrapper.empty > #thumbnail {
+  display: none;
+}
 
 #thumbnail {
   height: 100%;
   width: 100%;
-}
-#thumbnail.empty {
-  display: none;
 }
 
 #title-wrapper {
@@ -47,4 +47,16 @@ body {
   color: hsl(0, 0%, 60%);
   font-size: 1rem;
   text-align: center;
+}
+
+#error {
+  align-items: center;
+  color: hsl(0, 80%, 50%);
+  display: flex;
+  font-size: 2rem;
+  height: 100vh;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  width: 100vw;
 }

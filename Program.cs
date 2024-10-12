@@ -21,6 +21,7 @@ class Program
 
       var app = builder.Build();
 
+      app.UseDefaultFiles();
       app.UseStaticFiles();
       app.MapGet("/data", () => GetMediaPropertiesJson());
       app.Run();
@@ -41,19 +42,10 @@ class Program
   {
     var sessionManager = await GlobalSystemMediaTransportControlsSessionManager.RequestAsync();
     var session = sessionManager.GetCurrentSession();
-
-    if (session == null)
-    {
-      Console.Error.WriteLine("No active media session found");
-      return null;
-    }
+    if (session == null) return null;
 
     var mediaProperties = await session.TryGetMediaPropertiesAsync();
-    if (mediaProperties == null)
-    {
-      Console.Error.WriteLine("Unable to retrieve media properties");
-      return null;
-    }
+    if (mediaProperties == null) return null;
 
     return new MediaInfo
     {

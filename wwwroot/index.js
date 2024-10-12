@@ -1,50 +1,62 @@
-async function fetchMediaProperties() {
-  try {
-    const response = await fetch('/data');
-    if (!response.ok) {
-      return {};
-    }
-    return response.json();
-  } catch (error) {
-    console.error(error);
-    return {};
-  }
-}
-
+const TITLE = document.getElementById('title');
+const ARTIST = document.getElementById('artist');
+const THUMBNAIL = document.getElementById('thumbnail');
+const THUMBNAIL_WRAPPER = document.getElementById('thumbnail-wrapper');
+const ERROR = document.getElementById('error');
 let noThumbnailCount = 0;
 
-function updateMediaProperties(data) {
+async function main() {
+  updateWidget(await fetchMediaProperties());
+  setInterval(async () => {
+    updateWidget(await fetchMediaProperties());
+  }, 1000);
+}
+
+main();
+
+function updateWidget(data) {
+  if (!data) {
+    clear();
+    return;
+  }
   if (!data.thumbnail && noThumbnailCount < 3) {
     noThumbnailCount++;
     return;
   }
   noThumbnailCount = 0;
 
-  const title = document.getElementById('title');
-  const artist = document.getElementById('artist');
-  const thumbnail = document.getElementById('thumbnail');
-  const thumbnailWrapper = document.getElementById('thumbnail-wrapper');
-
-  title.textContent = data.title || '';
-  artist.textContent = data.artist || '';
+  TITLE.textContent = data.title || '';
+  ARTIST.textContent = data.artist || '';
   if (data.thumbnail) {
-    thumbnailWrapper.classList.remove('empty');
-    thumbnail.classList.remove('empty');
-    thumbnail.setAttribute(
-      'src',
-      `data:${data.thumbnail?.mimeType};base64,${data.thumbnail?.base64}`
-    );
+    showThumbnail(data.thumbnail);
   } else {
-    thumbnailWrapper.classList.add('empty');
-    thumbnail.classList.add('empty');
+    hideThumbnail();
   }
 }
 
-async function main() {
-  updateMediaProperties(await fetchMediaProperties());
-  setInterval(async () => {
-    updateMediaProperties(await fetchMediaProperties());
-  }, 1000);
+function clear() {
+  TITLE.textContent = '';
+  ARTIST.textContent = '';
+  hideThumbnail();
 }
 
-main();
+function showThumbnail({ base64, mimeType }) {
+  THUMBNAIL_WRAPPER.classList.remove('empty');
+  THUMBNAIL.setAttribute('src', `data:${mimeType};base64,${base64}`);
+}
+
+function hideThumbnail() {
+  THUMBNAIL_WRAPPER.classList.add('empty');
+  THUMBNAIL.setAttribute('src', '');
+}
+
+async function fetchMediaProperties() {
+  try {
+    const response = await fetch('/data');
+    ERROR.textContent = '';
+    return response.ok ? response.json() : null;
+  } catch (error) {
+    ERROR.textContent = 'Server is down';
+    return null;
+  }
+}
