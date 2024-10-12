@@ -1,10 +1,7 @@
-name: .NET Publish
+name: .NET publish
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
