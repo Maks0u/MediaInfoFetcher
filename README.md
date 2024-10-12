@@ -17,20 +17,25 @@ This project provides a simple API to retrieve information about the currently p
 
 ## Installation
 
+### Pre-built binary
+
+1. Go to [release page](https://github.com/Maks0u/MediaWidget/releases/latest)
+2. Download `MediaWidget.zip`
+3. Extract zip file in a new folder
+4. Run `MediaWidget.exe`
+
+### Build from source
+
 ```
 git clone https://github.com/Maks0u/MediaWidget.git
 cd MediaWidget
 dotnet build
+dotnet run
 ```
 
 ## Usage
 
-1. Run the application:
-
-```
-dotnet run
-```
-
+1. [Install](#installation) and run the application
 2. The server will start on `http://localhost:5000`
 3. Access the API endpoint at `http://localhost:5000/data`
 4. In a web browser, access the static web page at `http://localhost:5000` or `http://localhost:5000/index.html`
